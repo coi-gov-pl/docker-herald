@@ -4,12 +4,12 @@ MAINTAINER Karol Kozakowski <karol.kozakowski@coi.gov.pl>
 
 ENV DEBIAN_FRONTEND noninteractive
 ENV HERALD_USER herald
-ENV HERALD_USER_ID 765
+ENV HERALD_USER_ID 442
 ENV HERALD_HOMEDIR /home/$HERALD_USER
 
 RUN apt-get update
 RUN apt-get install -y ruby libpq-dev ruby-dev make gcc postgresql
-RUN gem install puppet-herald
+RUN gem install puppet-herald pg
 
 RUN useradd --system --create-home --uid $HERALD_USER_ID --home-dir $HERALD_HOMEDIR $HERALD_USER
 RUN mkdir /etc/pherald
@@ -21,4 +21,4 @@ ADD src/herald_start.sh /usr/local/sbin/herald-start
 RUN chmod +x /usr/local/sbin/herald-start
 
 USER $HERALD_USER
-CMD ["herald-start"]
+CMD ["/usr/local/sbin/herald-start"]
