@@ -4,7 +4,7 @@ POSTGRES_HOST=${POSTGRES_HOST:-postgres}
 POSTGRES_PORT=${POSTGRES_PORT:-5432}
 POSTGRES_USER=${POSTGRES_USER:-pherald}
 POSTGRES_DB_NAME=${POSTGRES_DB_NAME:-pherald}
-# you should set password in the environment variable, do notuse this example pasword
+# you should set password in the environment variable, do not use this example paswword
 POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-VGh1IEphbiAyMSAxNDo1NzowOSBDRVQgMjAxNgo}
 POSTGRES_DEPLOY_DATABASE=${POSTGRES_DEPLOY_DATABASE:-yes}
 HERALD_PORT=11303
@@ -31,7 +31,7 @@ EOF
 
   if [[ `psql postgres -tAc "SELECT 1 FROM pg_database WHERE datname='$POSTGRES_DB_NAME'"` == "1" ]]
   then
-    echo "everything is ready"
+    echo "Database ${POSTGRES_DB_NAME} is already running"
   else
     psql -h $POSTGRES_PORT -d $POSTGRES_DB_NAME -U $POSTGRES_USER <<EOF
     CREATE DATABASE "${POSTGRES_DB_NAME}" WITH OWNER = ${POSTGRES_USER}
