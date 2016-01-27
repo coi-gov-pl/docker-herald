@@ -8,10 +8,7 @@ ENV HERALD_USER_ID 765
 ENV HERALD_HOMEDIR /home/$HERALD_USER
 
 RUN apt-get update
-RUN apt-get install -y ruby
-RUN apt-get install -y libpq-dev
-RUN apt-get install -y ruby-dev
-RUN apt-get install -y make gcc postgresql
+RUN apt-get install -y ruby libpq-dev ruby-dev make gcc postgresql
 RUN gem install puppet-herald
 
 RUN useradd --system --create-home --uid $HERALD_USER_ID --home-dir $HERALD_HOMEDIR $HERALD_USER
