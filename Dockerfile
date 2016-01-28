@@ -17,7 +17,7 @@ RUN touch /etc/pherald/passfile
 RUN chown $HERALD_USER:$HERALD_USER /etc/pherald/passfile
 RUN chmod 0600 /etc/pherald/passfile
 
-ADD src/herald_start.sh /usr/local/sbin/herald-start
+COPY src/herald_start.sh /usr/local/sbin/herald-start
 RUN chmod +x /usr/local/sbin/herald-start
 
 USER $HERALD_USER
