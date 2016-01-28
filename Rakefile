@@ -46,7 +46,7 @@ task :test => [:build] do
 	sh 'docker run -d --link postgres -p 11303:11303 --name=herald coigovpl/herald'
 	sh 'docker logs -f herald &'
 	wait_for_port 11303, 60
-	sh 'curl -ik http://localhost:11303'
+	sh 'curl -ik http://localhost:11303 | grep -q "Herald - a Puppet report processor"'
 	sh 'docker rm -f herald || true'
 	sh 'docker rm -f postgres || true'
 end

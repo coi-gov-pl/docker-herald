@@ -46,4 +46,4 @@ fi
 exec puppet-herald \
   --dbconn postgresql://${POSTGRES_USER}@${POSTGRES_HOST}:${PORT_POSTGRES}/${POSTGRES_DB_NAME} \
   --passfile /etc/pherald/passfile \
-  --bind 127.0.0.1 "$@"
+  --bind 0.0.0.0 "$@"
