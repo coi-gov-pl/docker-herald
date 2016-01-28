@@ -1,12 +1,12 @@
 #!/bin/bash -e
 
-HERALD_POSTGRES_HOST=${POSTGRES_HOST:-postgres}
-HERALD_PORT_POSTGRES=${POSTGRES_POR:-5432}
-HERALD_POSTGRES_USER=${POSTGRES_USER:-pherald}
-HERALD_POSTGRES_DB_NAME=${POSTGRES_DB_NAME:-pherald}
+HERALD_POSTGRES_HOST=${HERALD_POSTGRES_HOST:-postgres}
+HERALD_POSTGRES_PORT=${HERALD_POSTGRES_PORT:-5432}
+HERALD_POSTGRES_USER=${HERALD_POSTGRES_USER:-pherald}
+HERALD_POSTGRES_DB_NAME=${HERALD_POSTGRES_DB_NAME:-pherald}
 # you should set password in the environment variable, do not use this example paswword
-HERALD_POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-VGh1IEphbiAyMSAxNDo1NzowOSBDRVQgMjAxNgo}
-HERALD_POSTGRES_CREATE_DATABASE=${POSTGRES_DEPLOY_DATABASE:-yes}
+HERALD_POSTGRES_PASSWORD=${HERALD_POSTGRES_PASSWORD:-VGh1IEphbiAyMSAxNDo1NzowOSBDRVQgMjAxNgo}
+HERALD_POSTGRES_CREATE_DATABASE=${HERALD_POSTGRES_CREATE_DATABASE:-yes}
 HERALD_PORT=11303
 
 echo "$HERALD_POSTGRES_PASSWORD" > /etc/pherald/passfile
@@ -29,13 +29,13 @@ if [[ $HERALD_POSTGRES_CREATE_DATABASE=="yes" ]]; then
   END
   \$body$;
 EOF
-  psql -h $HERALD_POSTGRES_HOST -p $HERALD_PORT_POSTGRES -U postgres -d postgres < /tmp/create-user.sql
+  psql -h $HERALD_POSTGRES_HOST -p $HERALD_POSTGRES_PORT -U postgres -d postgres < /tmp/create-user.sql
 
-  if [[ `psql -h $HERALD_POSTGRES_HOST -p $HERALD_PORT_POSTGRES -d postgres -U $HERALD_POSTGRES_USER -tAc "SELECT 1 FROM pg_database WHERE datname='$HERALD_POSTGRES_DB_NAME'"` == "1" ]]
+  if [[ `psql -h $HERALD_POSTGRES_HOST -p $HERALD_POSTGRES_PORT -d postgres -U $HERALD_POSTGRES_USER -tAc "SELECT 1 FROM pg_database WHERE datname='$HERALD_POSTGRES_DB_NAME'"` == "1" ]]
   then
     echo "Database ${HERALD_POSTGRES_DB_NAME} is already running"
   else
-    psql -h $HERALD_POSTGRES_HOST -p $HERALD_PORT_POSTGRES -d postgres -U postgres <<EOF
+    psql -h $HERALD_POSTGRES_HOST -p $HERALD_POSTGRES_PORT -d postgres -U postgres <<EOF
     CREATE DATABASE "${HERALD_POSTGRES_DB_NAME}" WITH OWNER = "${HERALD_POSTGRES_USER}"
       ENCODING = 'UTF8'
       TABLESPACE = pg_default;
@@ -44,6 +44,6 @@ EOF
 fi
 
 exec puppet-herald \
-  --dbconn postgresql://${POSTGRES_USER}@${POSTGRES_HOST}:${PORT_POSTGRES}/${POSTGRES_DB_NAME} \
+  --dbconn postgresql://${HERALD_POSTGRES_USER}@${HERALD_POSTGRES_HOST}:${HERALD_POSTGRES_PORT}/${HERALD_POSTGRES_DB_NAME} \
   --passfile /etc/pherald/passfile \
   --bind 0.0.0.0 "$@"
