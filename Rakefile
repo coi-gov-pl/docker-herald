@@ -14,7 +14,6 @@ def is_port_open?(ip, port)
     end
   rescue Timeout::Error
   end
-
   return false
 end
 
