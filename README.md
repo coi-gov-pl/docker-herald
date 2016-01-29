@@ -36,9 +36,71 @@ If you like to run Herald with external postgres set appropriate configuration o
 
 ```
 docker run -d \
-  -e HERALD_POSTGRES_HOST=172.14.0.5 \
+  -e HERALD_POSTGRES_HOST=herald-db.localdomain \
   -p 11303:11303 \
   --name=herald coigovpl/herald
+```
+
+## Sample system startup scripts that uses this container
+
+file (executable) in `/etc/docker-apps/herald/container`:
+
+```bash
+#!/bin/bash -e
+
+action=$1
+
+export THISDIR=$(dirname $(readlink -f $0))
+export CONTAINER=herald
+HERALD_POSTGRES_PASSWORD=$(cat /etc/herald/passfile)
+
+case $action in
+  run)
+    exec docker run --rm \
+      --name $CONTAINER \
+      -p 11303:11303 \
+      -e HERALD_POSTGRES_HOST=herald-db.localdomain \
+      -e HERALD_POSTGRES_PASSWORD=$HERALD_POSTGRES_PASSWORD \
+      coigovpl/herald
+    ;;
+  kill)
+    docker kill --signal 'SIGINT' $CONTAINER || true
+    for i in $(seq 1 30); do
+      running=$(docker inspect --format="{{ .State.Running }}" $CONTAINER || echo false)
+      if [ "$running" == 'true' ]; then
+        sleep 1
+      else
+        docker rm -f $CONTAINER || true
+	      break
+      fi
+    done
+  ;;
+  *)
+    echo './container <run|kill>' 1>&2
+    exit 2
+  ;;
+esac
+```
+
+### systemd init file
+
+file in: `/etc/systemd/system/herald.service`
+
+```systemd
+[Unit]
+Description=Herald service
+Requires=docker.service
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/etc/docker-apps/herald
+ExecStart=/etc/docker-apps/herald/container run
+ExecStop=/etc/docker-apps/herald/container kill
+
+[Install]
+WantedBy=local.target
 ```
 
 ## Running tests
