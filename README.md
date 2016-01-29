@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/coi-gov-pl/docker-herald.svg?branch=develop)](https://travis-ci.org/coi-gov-pl/docker-herald)
 
-This is a container that holds a Herald app inside the Docker container. More info about the application and how to use it with Puppet are avialabel on https://github.com/wavesoftware/gem-puppet-herald README.md
+This is a container that holds a Herald app inside the Docker container. More info about the application and how to use it with Puppet are available on https://github.com/wavesoftware/gem-puppet-herald/blob/develop/README.md
 
 ## Overview
 
