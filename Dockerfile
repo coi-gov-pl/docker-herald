@@ -9,7 +9,8 @@ ENV HERALD_HOMEDIR /home/$HERALD_USER
 
 RUN apt-get update
 RUN apt-get install -y ruby libpq-dev ruby-dev make gcc postgresql-client
-RUN gem install puppet-herald pg puma
+RUN gem install puppet-herald -v '0.8.1'
+RUN gem install pg puma
 
 RUN useradd --system --create-home --uid $HERALD_USER_ID --home-dir $HERALD_HOMEDIR $HERALD_USER
 RUN mkdir /etc/pherald
