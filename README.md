@@ -2,11 +2,15 @@
 
 [![Build Status](https://travis-ci.org/coi-gov-pl/docker-herald.svg?branch=develop)](https://travis-ci.org/coi-gov-pl/docker-herald)
 
-This is a container that holds a Herald app inside the Docker container. More info about the application and how to use it with Puppet are available on https://github.com/wavesoftware/gem-puppet-herald/blob/develop/README.md
+This is a Docker container that holds a Herald app inside. Herald is a puppet report processor that provides a gateway for consuming puppet reports, a REST API and a simple Web app to display them.
+
+![A reports list](https://raw.githubusercontent.com/wavesoftware/gem-puppet-herald/gh-pages/images/reports.png)
+
+More info about the application and how to use it with Puppet are available on repo page: https://github.com/wavesoftware/gem-puppet-herald
 
 ## Overview
 
-A docker image to run Herald tool on any Dockerized host: Linux, Mac or Windows. It utilize PostgreSQL as a database containing Puppet reports. While application stats it will try to migrate database to desired state.
+A docker image to run Herald app on any Docker host: Linux, Mac or Windows. It utilize PostgreSQL as a database containing Puppet reports. While application stats it will try to migrate database to desired state.
 
 ## Configuration
 
